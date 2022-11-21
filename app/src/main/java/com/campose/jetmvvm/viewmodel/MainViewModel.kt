@@ -2,8 +2,8 @@ package com.campose.jetmvvm.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.campose.jetmvvm.model.data.UserService
-import com.campose.jetmvvm.model.response.User
+import com.campose.jetmvvm.repository.UserRepository
+import com.campose.jetmvvm.utils.UserState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val userService: UserService
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     val userState = MutableStateFlow<UserState>(UserState.DefaultState)
@@ -25,7 +25,7 @@ class MainViewModel @Inject constructor(
             withContext(Dispatchers.IO) {
                 try {
                     delay(2000)
-                    val user = userService.fetchUser()
+                    val user = userRepository.signInUser()
                     userState.tryEmit(UserState.LogInSuccess(user))
                 } catch (e: Exception) {
                     userState.tryEmit(UserState.Error(e.localizedMessage))
@@ -35,7 +35,6 @@ class MainViewModel @Inject constructor(
     }
 
 
-    
     suspend fun signOut() {
         viewModelScope.launch {
             userState.tryEmit(UserState.LoadingState)
@@ -49,12 +48,4 @@ class MainViewModel @Inject constructor(
             }
         }
     }
-}
-sealed class UserState {
-    object DefaultState : UserState()
-    object StartState : UserState()
-    object LoadingState : UserState()
-    object LogOutSuccess : UserState()
-    data class LogInSuccess(val users: List<User>) : UserState()
-    data class Error(val errorMessage: String) : UserState()
 }

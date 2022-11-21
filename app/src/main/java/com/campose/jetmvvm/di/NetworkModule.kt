@@ -1,6 +1,6 @@
 package com.campose.jetmvvm.di
 
-import com.campose.jetmvvm.model.data.UserService
+import com.campose.jetmvvm.api.UserServiceAPI
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-class AppModule {
+class NetworkModule {
 
     @Singleton
     @Provides
@@ -25,7 +25,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideSerService(retrofit: Retrofit): UserService {
-        return retrofit.create(UserService::class.java)
+    fun provideSerService(retrofit: Retrofit): UserServiceAPI {
+        return retrofit.create(UserServiceAPI::class.java)
     }
 }

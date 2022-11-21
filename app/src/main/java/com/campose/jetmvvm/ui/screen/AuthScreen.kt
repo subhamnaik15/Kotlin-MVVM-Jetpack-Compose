@@ -18,8 +18,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.campose.jetmvvm.utils.UserState
 import com.campose.jetmvvm.viewmodel.MainViewModel
-import com.campose.jetmvvm.viewmodel.UserState
 import kotlinx.coroutines.launch
 
 @Composable
